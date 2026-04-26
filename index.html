@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechRent — Оренда спецтехніки в Україні</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+--black: #0a0a0a;
+--yellow: #FFD600;
+--yellow-dark: #E6C000;
+--white: #ffffff;
+--gray: #f4f4f2;
+--gray-mid: #c8c8c4;
+--gray-dark: #6b6b65;
+--card-bg: #141414;
+--border: rgba(255,255,255,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+font-family: ‘Manrope’, sans-serif;
+background: var(–black);
+color: var(–white);
+overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.03’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 9999;
+opacity: 0.4;
+}
+
+/* ── HEADER ── */
+header {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 48px;
+height: 72px;
+background: rgba(10,10,10,0.85);
+backdrop-filter: blur(16px);
+border-bottom: 1px solid var(–border);
+}
+
+.logo {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 20px;
+font-weight: 900;
+letter-spacing: -0.5px;
+color: var(–white);
+text-decoration: none;
+}
+.logo span { color: var(–yellow); }
+
+nav { display: flex; gap: 36px; align-items: center; }
+nav a {
+font-size: 13px;
+font-weight: 500;
+color: var(–gray-mid);
+text-decoration: none;
+letter-spacing: 0.3px;
+transition: color 0.2s;
+}
+nav a:hover { color: var(–white); }
+
+.header-actions { display: flex; gap: 12px; align-items: center; }
+
+.btn-ghost {
+padding: 9px 20px;
+border: 1px solid var(–border);
+background: transparent;
+color: var(–white);
+font-family: ‘Manrope’, sans-serif;
+font-size: 13px;
+font-weight: 600;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.2s;
+text-decoration: none;
+}
+.btn-ghost:hover { border-color: var(–gray-mid); background: rgba(255,255,255,0.05); }
+
+.btn-primary {
+padding: 9px 20px;
+background: var(–yellow);
+color: var(–black);
+font-family: ‘Manrope’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.2s;
+text-decoration: none;
+}
+.btn-primary:hover { background: var(–yellow-dark); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 120px 48px 80px;
+position: relative;
+overflow: hidden;
+}
+
+.hero-bg {
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse 60% 50% at 70% 50%, rgba(255,214,0,0.07) 0%, transparent 70%),
+radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255,214,0,0.04) 0%, transparent 60%);
+}
+
+.hero-grid-lines {
+position: absolute;
+inset: 0;
+background-image:
+linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+background-size: 80px 80px;
+}
+
+.hero-tag {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: rgba(255,214,0,0.1);
+border: 1px solid rgba(255,214,0,0.2);
+color: var(–yellow);
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+padding: 6px 14px;
+border-radius: 100px;
+margin-bottom: 32px;
+width: fit-content;
+animation: fadeUp 0.6s ease both;
+}
+
+.hero-tag::before {
+content: ‘’;
+width: 6px; height: 6px;
+background: var(–yellow);
+border-radius: 50%;
+animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+h1 {
+font-family: ‘Unbounded’, sans-serif;
+font-size: clamp(42px, 7vw, 96px);
+font-weight: 900;
+line-height: 0.95;
+letter-spacing: -3px;
+max-width: 900px;
+margin-bottom: 28px;
+animation: fadeUp 0.6s 0.1s ease both;
+}
+
+h1 em {
+font-style: normal;
+color: var(–yellow);
+position: relative;
+}
+
+.hero-sub {
+font-size: 17px;
+font-weight: 400;
+color: var(–gray-mid);
+max-width: 480px;
+line-height: 1.7;
+margin-bottom: 48px;
+animation: fadeUp 0.6s 0.2s ease both;
+}
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(24px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SEARCH BOX ── */
+.search-box {
+display: flex;
+gap: 0;
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 16px;
+padding: 8px;
+max-width: 780px;
+animation: fadeUp 0.6s 0.3s ease both;
+backdrop-filter: blur(8px);
+}
+
+.search-field {
+flex: 1;
+display: flex;
+flex-direction: column;
+padding: 12px 20px;
+border-right: 1px solid rgba(255,255,255,0.08);
+}
+.search-field:last-of-type { border-right: none; }
+
+.search-label {
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(–yellow);
+margin-bottom: 4px;
+}
+
+.search-input {
+background: transparent;
+border: none;
+outline: none;
+color: var(–white);
+font-family: ‘Manrope’, sans-serif;
+font-size: 14px;
+font-weight: 500;
+width: 100%;
+}
+.search-input::placeholder { color: var(–gray-dark); }
+.search-input option { background: #1a1a1a; }
+
+.search-btn {
+display: flex;
+align-items: center;
+gap: 10px;
+background: var(–yellow);
+color: var(–black);
+border: none;
+border-radius: 10px;
+padding: 16px 28px;
+font-family: ‘Manrope’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+white-space: nowrap;
+transition: all 0.2s;
+}
+.search-btn:hover { background: var(–yellow-dark); transform: scale(1.02); }
+.search-btn svg { width: 18px; height: 18px; }
+
+/* ── STATS ROW ── */
+.stats-row {
+display: flex;
+gap: 48px;
+margin-top: 52px;
+animation: fadeUp 0.6s 0.4s ease both;
+}
+.stat-item { }
+.stat-num {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 28px;
+font-weight: 700;
+color: var(–white);
+line-height: 1;
+}
+.stat-num span { color: var(–yellow); }
+.stat-label {
+font-size: 12px;
+color: var(–gray-dark);
+margin-top: 4px;
+font-weight: 500;
+}
+
+/* ── FLOATING CARDS ── */
+.hero-float {
+position: absolute;
+right: 48px;
+top: 50%;
+transform: translateY(-50%);
+display: flex;
+flex-direction: column;
+gap: 16px;
+animation: fadeUp 0.8s 0.5s ease both;
+}
+
+.float-card {
+background: rgba(20,20,20,0.9);
+border: 1px solid rgba(255,255,255,0.08);
+border-radius: 14px;
+padding: 16px 20px;
+display: flex;
+align-items: center;
+gap: 14px;
+backdrop-filter: blur(12px);
+min-width: 240px;
+transition: transform 0.3s;
+}
+.float-card:hover { transform: translateX(-4px); }
+
+.float-icon {
+width: 44px; height: 44px;
+background: rgba(255,214,0,0.1);
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 22px;
+flex-shrink: 0;
+}
+
+.float-info { }
+.float-title { font-size: 13px; font-weight: 600; color: var(–white); }
+.float-meta { font-size: 11px; color: var(–gray-dark); margin-top: 2px; }
+.float-price { font-size: 13px; font-weight: 700; color: var(–yellow); margin-top: 4px; }
+
+.float-badge {
+margin-left: auto;
+background: rgba(255,214,0,0.15);
+color: var(–yellow);
+font-size: 10px;
+font-weight: 700;
+padding: 3px 8px;
+border-radius: 6px;
+white-space: nowrap;
+}
+.float-badge.new { background: rgba(52,211,153,0.15); color: #34d399; }
+
+/* ── CATEGORIES ── */
+.section { padding: 100px 48px; }
+.section-header {
+display: flex;
+align-items: flex-end;
+justify-content: space-between;
+margin-bottom: 48px;
+}
+
+.section-eyebrow {
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–yellow);
+margin-bottom: 10px;
+}
+
+h2 {
+font-family: ‘Unbounded’, sans-serif;
+font-size: clamp(28px, 4vw, 44px);
+font-weight: 700;
+letter-spacing: -1.5px;
+line-height: 1.1;
+}
+
+.see-all {
+font-size: 13px;
+font-weight: 600;
+color: var(–gray-mid);
+text-decoration: none;
+display: flex;
+align-items: center;
+gap: 6px;
+transition: color 0.2s;
+white-space: nowrap;
+margin-bottom: 6px;
+}
+.see-all:hover { color: var(–yellow); }
+
+.categories-grid {
+display: grid;
+grid-template-columns: repeat(6, 1fr);
+gap: 12px;
+}
+
+.cat-card {
+background: var(–card-bg);
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 16px;
+padding: 28px 20px 24px;
+cursor: pointer;
+transition: all 0.3s;
+text-decoration: none;
+color: inherit;
+display: block;
+}
+.cat-card:hover {
+border-color: rgba(255,214,0,0.3);
+background: rgba(255,214,0,0.04);
+transform: translateY(-4px);
+}
+
+.cat-emoji {
+font-size: 36px;
+display: block;
+margin-bottom: 16px;
+}
+
+.cat-name {
+font-size: 14px;
+font-weight: 600;
+color: var(–white);
+margin-bottom: 4px;
+}
+
+.cat-count {
+font-size: 12px;
+color: var(–gray-dark);
+}
+
+/* ── TOP LISTINGS ── */
+.listings-section {
+background: #0d0d0d;
+padding: 100px 48px;
+}
+
+.listings-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 20px;
+}
+
+.listing-card {
+background: var(–card-bg);
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 20px;
+overflow: hidden;
+cursor: pointer;
+transition: all 0.3s;
+}
+.listing-card:hover { transform: translateY(-6px); border-color: rgba(255,214,0,0.2); }
+
+.listing-img {
+width: 100%;
+height: 200px;
+background: linear-gradient(135deg, #1a1a1a, #222);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 64px;
+position: relative;
+}
+
+.listing-top-badge {
+position: absolute;
+top: 14px;
+left: 14px;
+background: var(–yellow);
+color: var(–black);
+font-size: 10px;
+font-weight: 800;
+letter-spacing: 1px;
+text-transform: uppercase;
+padding: 4px 10px;
+border-radius: 6px;
+}
+
+.listing-city {
+position: absolute;
+top: 14px;
+right: 14px;
+background: rgba(0,0,0,0.6);
+color: var(–gray-mid);
+font-size: 11px;
+font-weight: 500;
+padding: 4px 10px;
+border-radius: 6px;
+backdrop-filter: blur(8px);
+}
+
+.listing-body { padding: 20px; }
+
+.listing-cat {
+font-size: 11px;
+color: var(–yellow);
+font-weight: 700;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+margin-bottom: 6px;
+}
+
+.listing-title {
+font-size: 17px;
+font-weight: 700;
+color: var(–white);
+margin-bottom: 8px;
+line-height: 1.3;
+}
+
+.listing-desc {
+font-size: 13px;
+color: var(–gray-dark);
+line-height: 1.6;
+margin-bottom: 16px;
+}
+
+.listing-footer {
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-top: 1px solid rgba(255,255,255,0.06);
+padding-top: 14px;
+}
+
+.listing-price { }
+.price-amount {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 18px;
+font-weight: 700;
+color: var(–yellow);
+}
+.price-unit { font-size: 11px; color: var(–gray-dark); margin-top: 1px; }
+
+.listing-rating {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.stars { color: var(–yellow); font-size: 12px; letter-spacing: -1px; }
+.rating-score { font-size: 13px; font-weight: 700; color: var(–white); }
+.rating-count { font-size: 11px; color: var(–gray-dark); }
+
+/* ── HOW IT WORKS ── */
+.how-section {
+padding: 100px 48px;
+background: var(–black);
+}
+
+.how-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: center;
+margin-top: 60px;
+}
+
+.how-steps { display: flex; flex-direction: column; gap: 0; }
+
+.how-step {
+display: flex;
+gap: 24px;
+padding: 32px 0;
+border-bottom: 1px solid rgba(255,255,255,0.06);
+cursor: pointer;
+transition: all 0.2s;
+}
+.how-step:first-child { padding-top: 0; }
+.how-step:last-child { border-bottom: none; }
+.how-step:hover .step-num { background: var(–yellow); color: var(–black); }
+
+.step-num {
+width: 48px; height: 48px;
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Unbounded’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+color: var(–gray-mid);
+flex-shrink: 0;
+transition: all 0.3s;
+}
+
+.step-content { }
+.step-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(–white); }
+.step-desc { font-size: 14px; color: var(–gray-dark); line-height: 1.7; }
+
+.how-visual {
+background: var(–card-bg);
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 24px;
+padding: 40px;
+position: relative;
+overflow: hidden;
+}
+
+.how-visual::before {
+content: ‘’;
+position: absolute;
+top: -40px; right: -40px;
+width: 200px; height: 200px;
+background: radial-gradient(circle, rgba(255,214,0,0.08), transparent 70%);
+border-radius: 50%;
+}
+
+.mock-phone {
+background: #1a1a1a;
+border: 1px solid rgba(255,255,255,0.08);
+border-radius: 16px;
+padding: 20px;
+margin-bottom: 16px;
+}
+
+.mock-search {
+background: rgba(255,255,255,0.05);
+border-radius: 10px;
+padding: 12px 16px;
+font-size: 13px;
+color: var(–gray-dark);
+margin-bottom: 16px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.mock-result {
+background: rgba(255,255,255,0.03);
+border-radius: 10px;
+padding: 14px;
+display: flex;
+gap: 12px;
+margin-bottom: 8px;
+transition: background 0.2s;
+}
+.mock-result:hover { background: rgba(255,214,0,0.05); }
+
+.mock-icon {
+width: 40px; height: 40px;
+background: rgba(255,214,0,0.1);
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 18px;
+flex-shrink: 0;
+}
+
+.mock-text { flex: 1; }
+.mock-name { font-size: 12px; font-weight: 600; color: var(–white); }
+.mock-loc { font-size: 11px; color: var(–gray-dark); }
+.mock-price-sm { font-size: 12px; font-weight: 700; color: var(–yellow); }
+
+/* ── OWNER CTA ── */
+.owner-section {
+padding: 80px 48px;
+background: #0d0d0d;
+}
+
+.owner-banner {
+background: var(–yellow);
+border-radius: 24px;
+padding: 64px;
+display: grid;
+grid-template-columns: 1fr auto;
+gap: 48px;
+align-items: center;
+position: relative;
+overflow: hidden;
+}
+
+.owner-banner::before {
+content: ‘’;
+position: absolute;
+right: -60px; top: -60px;
+width: 300px; height: 300px;
+background: rgba(0,0,0,0.06);
+border-radius: 50%;
+}
+.owner-banner::after {
+content: ‘’;
+position: absolute;
+right: 80px; bottom: -80px;
+width: 200px; height: 200px;
+background: rgba(0,0,0,0.04);
+border-radius: 50%;
+}
+
+.owner-content { position: relative; z-index: 1; }
+.owner-eyebrow {
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: rgba(0,0,0,0.5);
+margin-bottom: 12px;
+}
+
+.owner-title {
+font-family: ‘Unbounded’, sans-serif;
+font-size: clamp(24px, 3vw, 36px);
+font-weight: 900;
+color: var(–black);
+letter-spacing: -1px;
+line-height: 1.1;
+margin-bottom: 16px;
+}
+
+.owner-desc {
+font-size: 15px;
+color: rgba(0,0,0,0.65);
+line-height: 1.7;
+max-width: 480px;
+}
+
+.owner-actions {
+display: flex;
+flex-direction: column;
+gap: 12px;
+position: relative;
+z-index: 1;
+}
+
+.btn-dark {
+display: block;
+padding: 16px 32px;
+background: var(–black);
+color: var(–white);
+font-family: ‘Manrope’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+border-radius: 12px;
+text-decoration: none;
+text-align: center;
+transition: all 0.2s;
+white-space: nowrap;
+}
+.btn-dark:hover { background: #1a1a1a; transform: translateY(-2px); }
+
+.owner-note {
+font-size: 12px;
+color: rgba(0,0,0,0.5);
+text-align: center;
+font-weight: 500;
+}
+
+/* ── FOOTER ── */
+footer {
+padding: 64px 48px 40px;
+border-top: 1px solid var(–border);
+}
+
+.footer-top {
+display: grid;
+grid-template-columns: 280px 1fr 1fr 1fr;
+gap: 48px;
+margin-bottom: 48px;
+}
+
+.footer-logo {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 22px;
+font-weight: 900;
+margin-bottom: 12px;
+}
+.footer-logo span { color: var(–yellow); }
+
+.footer-tagline {
+font-size: 13px;
+color: var(–gray-dark);
+line-height: 1.7;
+margin-bottom: 24px;
+}
+
+.footer-social { display: flex; gap: 10px; }
+.social-btn {
+width: 38px; height: 38px;
+border: 1px solid var(–border);
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 16px;
+cursor: pointer;
+transition: all 0.2s;
+text-decoration: none;
+color: var(–white);
+}
+.social-btn:hover { border-color: var(–yellow); background: rgba(255,214,0,0.1); }
+
+.footer-col h4 {
+font-size: 12px;
+font-weight: 700;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–gray-mid);
+margin-bottom: 20px;
+}
+
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a {
+font-size: 14px;
+color: var(–gray-dark);
+text-decoration: none;
+transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(–white); }
+
+.footer-bottom {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-top: 24px;
+border-top: 1px solid var(–border);
+}
+
+.footer-copy { font-size: 12px; color: var(–gray-dark); }
+.footer-bottom-links { display: flex; gap: 24px; }
+.footer-bottom-links a { font-size: 12px; color: var(–gray-dark); text-decoration: none; }
+.footer-bottom-links a:hover { color: var(–gray-mid); }
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+opacity: 0;
+transform: translateY(30px);
+transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── TICKER ── */
+.ticker-wrap {
+background: var(–yellow);
+padding: 14px 0;
+overflow: hidden;
+white-space: nowrap;
+}
+
+.ticker {
+display: inline-flex;
+gap: 0;
+animation: ticker 30s linear infinite;
+}
+
+.ticker-item {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+padding: 0 32px;
+font-family: ‘Unbounded’, sans-serif;
+font-size: 12px;
+font-weight: 600;
+color: var(–black);
+letter-spacing: 0.5px;
+}
+
+.ticker-dot {
+width: 5px; height: 5px;
+background: rgba(0,0,0,0.3);
+border-radius: 50%;
+flex-shrink: 0;
+}
+
+@keyframes ticker {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+</style>
+
+</head>
+<body>
+
+<!-- HEADER -->
+
+<header>
+<a href="#" class="logo">Tech<span>Rent</span></a>
+<nav>
+<a href="#">Каталог</a>
+<a href="#">Категорії</a>
+<a href="#">Як це працює</a>
+<a href="#">Для власників</a>
+<a href="#">Контакти</a>
+</nav>
+<div class="header-actions">
+<a href="#" class="btn-ghost">Увійти</a>
+<a href="#" class="btn-primary">Розмістити техніку</a>
+</div>
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+<div class="hero-bg"></div>
+<div class="hero-grid-lines"></div>
+
+<div class="hero-tag">🇺🇦 Стартап для України</div>
+
+<h1>Оренда<br><em>спецтехніки</em><br>поруч</h1>
+
+<p class="hero-sub">Трактори, крани, яхти, гелікоптери — знайди та орендуй будь-яку техніку у своєму місті за хвилини</p>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+<div class="search-field">
+<span class="search-label">Місто</span>
+<select class="search-input">
+<option>Київ</option>
+<option>Харків</option>
+<option>Дніпро</option>
+<option>Одеса</option>
+<option>Львів</option>
+</select>
+</div>
+<div class="search-field">
+<span class="search-label">Категорія</span>
+<select class="search-input">
+<option>Вся техніка</option>
+<option>🚜 Сільськогосподарська</option>
+<option>🏗️ Будівельна</option>
+<option>⛵ Водний транспорт</option>
+<option>🚁 Авіація</option>
+<option>🚗 Спецавтомобілі</option>
+</select>
+</div>
+<div class="search-field">
+<span class="search-label">Дата</span>
+<input type="date" class="search-input" style="color-scheme:dark;">
+</div>
+<button class="search-btn">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+Знайти
+</button>
+</div>
+
+<!-- STATS -->
+
+<div class="stats-row">
+<div class="stat-item">
+<div class="stat-num">1,240<span>+</span></div>
+<div class="stat-label">Одиниць техніки</div>
+</div>
+<div class="stat-item">
+<div class="stat-num">48<span></span></div>
+<div class="stat-label">Міст України</div>
+</div>
+<div class="stat-item">
+<div class="stat-num">4.9<span>★</span></div>
+<div class="stat-label">Середній рейтинг</div>
+</div>
+<div class="stat-item">
+<div class="stat-num">3,800<span>+</span></div>
+<div class="stat-label">Успішних оренд</div>
+</div>
+</div>
+
+<!-- FLOATING CARDS -->
+
+<div class="hero-float">
+<div class="float-card">
+<div class="float-icon">🚜</div>
+<div class="float-info">
+<div class="float-title">Трактор John Deere</div>
+<div class="float-meta">📍 Київ · Відразу доступний</div>
+<div class="float-price">від 2 800 грн/день</div>
+</div>
+<span class="float-badge">ТОП</span>
+</div>
+<div class="float-card">
+<div class="float-icon">🏗️</div>
+<div class="float-info">
+<div class="float-title">Автокран 25т</div>
+<div class="float-meta">📍 Дніпро · Є оператор</div>
+<div class="float-price">від 4 500 грн/день</div>
+</div>
+<span class="float-badge">ТОП</span>
+</div>
+<div class="float-card">
+<div class="float-icon">🚁</div>
+<div class="float-info">
+<div class="float-title">Гелікоптер R44</div>
+<div class="float-meta">📍 Київ · Екскурсії</div>
+<div class="float-price">від 12 000 грн/год</div>
+</div>
+<span class="float-badge new">НОВИЙ</span>
+</div>
+</div>
+</section>
+
+<!-- TICKER -->
+
+<div class="ticker-wrap">
+<div class="ticker">
+<span class="ticker-item">🚜 Трактори<span class="ticker-dot"></span></span>
+<span class="ticker-item">🏗️ Автокрани<span class="ticker-dot"></span></span>
+<span class="ticker-item">⛵ Яхти в Дніпрі<span class="ticker-dot"></span></span>
+<span class="ticker-item">🚁 Гелікоптери<span class="ticker-dot"></span></span>
+<span class="ticker-item">✈️ Приватні літаки<span class="ticker-dot"></span></span>
+<span class="ticker-item">🚛 Вантажівки<span class="ticker-dot"></span></span>
+<span class="ticker-item">🏎️ Екскаватори<span class="ticker-dot"></span></span>
+<span class="ticker-item">🚒 Спецавто<span class="ticker-dot"></span></span>
+<span class="ticker-item">🚜 Трактори<span class="ticker-dot"></span></span>
+<span class="ticker-item">🏗️ Автокрани<span class="ticker-dot"></span></span>
+<span class="ticker-item">⛵ Яхти в Дніпрі<span class="ticker-dot"></span></span>
+<span class="ticker-item">🚁 Гелікоптери<span class="ticker-dot"></span></span>
+<span class="ticker-item">✈️ Приватні літаки<span class="ticker-dot"></span></span>
+<span class="ticker-item">🚛 Вантажівки<span class="ticker-dot"></span></span>
+<span class="ticker-item">🏎️ Екскаватори<span class="ticker-dot"></span></span>
+<span class="ticker-item">🚒 Спецавто<span class="ticker-dot"></span></span>
+</div>
+</div>
+
+<!-- CATEGORIES -->
+
+<section class="section reveal">
+<div class="section-header">
+<div>
+<div class="section-eyebrow">Категорії</div>
+<h2>Будь-яка техніка<br>для будь-якого завдання</h2>
+</div>
+<a href="#" class="see-all">Всі категорії →</a>
+</div>
+
+<div class="categories-grid">
+<a href="#" class="cat-card">
+<span class="cat-emoji">🚜</span>
+<div class="cat-name">Сільськогосподарська</div>
+<div class="cat-count">284 оголошення</div>
+</a>
+<a href="#" class="cat-card">
+<span class="cat-emoji">🏗️</span>
+<div class="cat-name">Будівельна техніка</div>
+<div class="cat-count">196 оголошень</div>
+</a>
+<a href="#" class="cat-card">
+<span class="cat-emoji">⛵</span>
+<div class="cat-name">Водний транспорт</div>
+<div class="cat-count">87 оголошень</div>
+</a>
+<a href="#" class="cat-card">
+<span class="cat-emoji">🚁</span>
+<div class="cat-name">Авіація</div>
+<div class="cat-count">23 оголошення</div>
+</a>
+<a href="#" class="cat-card">
+<span class="cat-emoji">🚛</span>
+<div class="cat-name">Вантажний транспорт</div>
+<div class="cat-count">312 оголошень</div>
+</a>
+<a href="#" class="cat-card">
+<span class="cat-emoji">🔧</span>
+<div class="cat-name">Спецпослуги</div>
+<div class="cat-count">158 оголошень</div>
+</a>
+</div>
+</section>
+
+<!-- TOP LISTINGS -->
+
+<section class="listings-section reveal">
+<div class="section-header">
+<div>
+<div class="section-eyebrow">Топ оголошення</div>
+<h2>Популярна техніка<br>у вашому місті</h2>
+</div>
+<a href="#" class="see-all">Переглянути всі →</a>
+</div>
+
+<div class="listings-grid">
+<div class="listing-card">
+<div class="listing-img">
+🚜
+<span class="listing-top-badge">⭐ ТОП</span>
+<span class="listing-city">📍 Київ</span>
+</div>
+<div class="listing-body">
+<div class="listing-cat">Сільськогосподарська</div>
+<div class="listing-title">Трактор John Deere 6130R з плугом</div>
+<div class="listing-desc">Потужний трактор для оранки, боронування та інших польових робіт. Є оператор.</div>
+<div class="listing-footer">
+<div class="listing-price">
+<div class="price-amount">2 800 ₴</div>
+<div class="price-unit">за день</div>
+</div>
+<div class="listing-rating">
+<span class="stars">★★★★★</span>
+<span class="rating-score">4.9</span>
+<span class="rating-count">(47 відгуків)</span>
+</div>
+</div>
+</div>
+</div>
+
+```
+<div class="listing-card">
+<div class="listing-img">
+🏗️
+<span class="listing-top-badge">⭐ ТОП</span>
+<span class="listing-city">📍 Дніпро</span>
+</div>
+<div class="listing-body">
+<div class="listing-cat">Будівельна техніка</div>
+<div class="listing-title">Автокран Liebherr LTM 1025 — 25 тонн</div>
+<div class="listing-desc">Оренда автокрана з досвідченим оператором. Підйом до 25 тонн. Виїзд по Дніпру.</div>
+<div class="listing-footer">
+<div class="listing-price">
+<div class="price-amount">4 500 ₴</div>
+<div class="price-unit">за день</div>
+</div>
+<div class="listing-rating">
+<span class="stars">★★★★★</span>
+<span class="rating-score">5.0</span>
+<span class="rating-count">(31 відгук)</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="listing-card">
+<div class="listing-img">
+🚁
+<span class="listing-top-badge">⭐ ТОП</span>
+<span class="listing-city">📍 Київ</span>
+</div>
+<div class="listing-body">
+<div class="listing-cat">Авіація</div>
+<div class="listing-title">Гелікоптер Robinson R44 — екскурсія</div>
+<div class="listing-desc">Оглядовий політ над Києвом. До 3 пасажирів. Тривалість від 30 хвилин.</div>
+<div class="listing-footer">
+<div class="listing-price">
+<div class="price-amount">12 000 ₴</div>
+<div class="price-unit">за годину</div>
+</div>
+<div class="listing-rating">
+<span class="stars">★★★★★</span>
+<span class="rating-score">4.8</span>
+<span class="rating-count">(19 відгуків)</span>
+</div>
+</div>
+</div>
+</div>
+```
+
+</div>
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section class="how-section reveal">
+<div class="section-eyebrow">Як це працює</div>
+<h2>Три кроки до оренди</h2>
+
+<div class="how-grid">
+<div class="how-steps">
+<div class="how-step">
+<div class="step-num">01</div>
+<div class="step-content">
+<div class="step-title">Знайди потрібну техніку</div>
+<div class="step-desc">Вибери місто, категорію і дату. Переглядай оголошення з фото, цінами та відгуками реальних клієнтів.</div>
+</div>
+</div>
+<div class="how-step">
+<div class="step-num">02</div>
+<div class="step-content">
+<div class="step-title">Зв'яжись з власником</div>
+<div class="step-desc">Напиши або подзвони власнику напряму. Уточни деталі, домовся про час і умови оренди.</div>
+</div>
+</div>
+<div class="how-step">
+<div class="step-num">03</div>
+<div class="step-content">
+<div class="step-title">Орендуй і залиш відгук</div>
+<div class="step-desc">Отримай техніку, виконай задачу. Після оренди залиш чесний відгук щоб допомогти іншим.</div>
+</div>
+</div>
+</div>
+
+```
+<div class="how-visual">
+<div class="mock-phone">
+<div class="mock-search">
+🔍 &nbsp;Трактор · Київ · Завтра
+</div>
+<div class="mock-result">
+<div class="mock-icon">🚜</div>
+<div class="mock-text">
+<div class="mock-name">John Deere 6130R</div>
+<div class="mock-loc">📍 Київ, Позняки · ★ 4.9</div>
+<div class="mock-price-sm">від 2 800 ₴/день</div>
+</div>
+</div>
+<div class="mock-result">
+<div class="mock-icon">🚜</div>
+<div class="mock-text">
+<div class="mock-name">МТЗ-82 Білорус</div>
+<div class="mock-loc">📍 Київ, Борщагівка · ★ 4.7</div>
+<div class="mock-price-sm">від 1 200 ₴/день</div>
+</div>
+</div>
+<div class="mock-result">
+<div class="mock-icon">🚜</div>
+<div class="mock-text">
+<div class="mock-name">Case IH Puma 185</div>
+<div class="mock-loc">📍 Київська обл. · ★ 5.0</div>
+<div class="mock-price-sm">від 3 500 ₴/день</div>
+</div>
+</div>
+</div>
+<div style="display:flex;gap:10px;">
+<div style="flex:1;background:rgba(255,214,0,0.08);border:1px solid rgba(255,214,0,0.15);border-radius:10px;padding:16px;text-align:center;">
+<div style="font-size:24px;margin-bottom:4px;">✅</div>
+<div style="font-size:11px;color:var(--gray-mid);font-weight:600;">Перевірені власники</div>
+</div>
+<div style="flex:1;background:rgba(255,214,0,0.08);border:1px solid rgba(255,214,0,0.15);border-radius:10px;padding:16px;text-align:center;">
+<div style="font-size:24px;margin-bottom:4px;">💬</div>
+<div style="font-size:11px;color:var(--gray-mid);font-weight:600;">Реальні відгуки</div>
+</div>
+<div style="flex:1;background:rgba(255,214,0,0.08);border:1px solid rgba(255,214,0,0.15);border-radius:10px;padding:16px;text-align:center;">
+<div style="font-size:24px;margin-bottom:4px;">⚡</div>
+<div style="font-size:11px;color:var(--gray-mid);font-weight:600;">Швидкий зв'язок</div>
+</div>
+</div>
+</div>
+```
+
+</div>
+</section>
+
+<!-- OWNER CTA -->
+
+<section class="owner-section reveal">
+<div class="owner-banner">
+<div class="owner-content">
+<div class="owner-eyebrow">Для власників техніки</div>
+<div class="owner-title">Твоя техніка<br>заробляє поки<br>ти відпочиваєш</div>
+<p class="owner-desc">Розмісти одну одиницю техніки безкоштовно. Без ФОП — лише перевірка документів. Отримуй замовлення від клієнтів у твоєму місті.</p>
+</div>
+<div class="owner-actions">
+<a href="#" class="btn-dark">Розмістити техніку →</a>
+<div class="owner-note">✓ Безкоштовно · ✓ Без ФОП · ✓ Швидка реєстрація</div>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+<div class="footer-top">
+<div>
+<div class="footer-logo">Tech<span>Rent</span></div>
+<p class="footer-tagline">Маркетплейс оренди спецтехніки та послуг в Україні. Від трактора до гелікоптера.</p>
+<div class="footer-social">
+<a href="#" class="social-btn">📘</a>
+<a href="#" class="social-btn">📸</a>
+<a href="#" class="social-btn">💬</a>
+<a href="#" class="social-btn">▶️</a>
+</div>
+</div>
+<div class="footer-col">
+<h4>Клієнтам</h4>
+<ul>
+<li><a href="#">Каталог техніки</a></li>
+<li><a href="#">Як орендувати</a></li>
+<li><a href="#">Пошук за містом</a></li>
+<li><a href="#">Відгуки та рейтинги</a></li>
+<li><a href="#">Допомога</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Власникам</h4>
+<ul>
+<li><a href="#">Розмістити техніку</a></li>
+<li><a href="#">Тарифи розміщення</a></li>
+<li><a href="#">Реклама та топ</a></li>
+<li><a href="#">Верифікація документів</a></li>
+<li><a href="#">Особистий кабінет</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Компанія</h4>
+<ul>
+<li><a href="#">Про нас</a></li>
+<li><a href="#">Блог</a></li>
+<li><a href="#">Партнерам</a></li>
+<li><a href="#">Контакти</a></li>
+<li><a href="#">Вакансії</a></li>
+</ul>
+</div>
+</div>
+
+<div class="footer-bottom">
+<div class="footer-copy">© 2025 TechRent. Всі права захищені 🇺🇦</div>
+<div class="footer-bottom-links">
+<a href="#">Умови користування</a>
+<a href="#">Політика конфіденційності</a>
+<a href="#">Cookies</a>
+</div>
+</div>
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(e => {
+if (e.isIntersecting) { e.target.classList.add('visible'); }
+});
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
